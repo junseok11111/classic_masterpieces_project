@@ -1,9 +1,16 @@
 <template>
   <div>
     <h1>MovieDetailView</h1>
+
+
     <p v-if="movie">{{movie}}</p>
     <p>================================</p>
     <p>{{casts}}</p>
+
+
+
+  
+    
   </div>
 </template>
 
@@ -11,6 +18,14 @@
 
 export default {
   name: 'MovieDetailView',
+  data() {
+    return {
+      videos: []
+    };
+  },
+  mounted() {
+    this.getVideos();
+  },
   computed: {
     movie() {
       // const movies = this.$store.state.upcoming_movies
@@ -34,7 +49,7 @@ export default {
     getMovieDetail() {
       const movieId = this.$route.params.id
       this.$store.dispatch('getMovieDetail', movieId)
-    }
+    },
   },
   created() {
     this.getMovieCasts()

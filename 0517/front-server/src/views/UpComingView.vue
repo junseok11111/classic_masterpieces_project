@@ -1,11 +1,14 @@
 <template>
   <div>
+
     <h1>UpComing</h1>
     <UpComingCard
       v-for="movie in upComing"
       :key = movie.id
       :movie="movie"  
     />
+
+    
   </div>
 </template>
 

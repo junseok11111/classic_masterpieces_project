@@ -4,6 +4,14 @@
       <router-link :to="{name: 'UpComingView'}">Upcoming</router-link>
     </h3>
 
+
+
+
+    
+    <ul>
+      <li v-for="video in videos" :key="video.id">{{ video.title }}</li>
+    </ul>
+
     <div class="wrapper">
       <section id="section1">
         <a href="#section3" class="arrow__btn left-arrow">‹</a>
@@ -28,6 +36,7 @@
 
 <script>
 import UpComingHCard from '@/components/UpComingHCard'
+import axios from 'axios';
 
 export default {
   name: 'HomeView',
@@ -48,10 +57,29 @@ export default {
     //   return this.$store.state.top_rated_movies
     // },
   },
+  
+   async getVideos() {
+      try {
+        const response = await axios.get('https://www.googleapis.com/youtube/v3/videos', {
+          params: {
+            part: 'snippet',
+            chart: 'mostPopular',
+            maxResults: 10,
+            key: 'AIzaSyAV_SvBR49eSF26yQGTJ2E4vFYh5bi1H2o' // Replace with your actual API key
+          }
+        });
+
+        this.videos = response.data.items;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
 }
 </script>
 
 <style>
+
 .wrapper {
   background-color: black;
   display: grid;

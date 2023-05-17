@@ -3,10 +3,16 @@ import VueRouter from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import UpComingView from '@/views/UpComingView.vue'
 import MovieDetailView from '@/views/MovieDetailView.vue'
+import DoorView from '@/views/DoorView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    name: 'DoorView',
+    component: DoorView,
+  },
   {
     path: '/home',
     name: 'home',

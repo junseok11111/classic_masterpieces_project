@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link :to="{name: 'home'}">Home</router-link> |
-    </nav>
+    
+    
     <router-view/>
   </div>
 </template>
@@ -25,8 +24,6 @@ export default {
 }
 </script>
 
-
-
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -34,10 +31,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: black;
 }
 
 nav {
   padding: 30px;
+  margin: 0;
 }
 
 nav a {
