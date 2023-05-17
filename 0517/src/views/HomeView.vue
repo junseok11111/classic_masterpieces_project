@@ -1,0 +1,113 @@
+<template>
+  <div class="home">
+    <h3>
+      <router-link :to="{name: 'UpComingView'}">Upcoming</router-link>
+    </h3>
+
+    <div class="wrapper">
+      <section id="section1">
+        <a href="#section3" class="arrow__btn left-arrow">‹</a>
+        <UpComingHCard v-for="movie in upComing1" :key = movie.id :movie="movie" class="item"/>
+        <a href="#section2" class="arrow__btn right-arrow">›</a>
+      </section>
+
+      <section id="section2">
+        <a href="#section1" class="arrow__btn left-arrow">‹</a>
+        <UpComingHCard v-for="movie in upComing2" :key = movie.id :movie="movie" class="item"/>
+        <a href="#section3" class="arrow__btn right-arrow">›</a>
+      </section>
+      
+      <section id="section3">
+        <a href="#section2" class="arrow__btn left-arrow">‹</a>
+        <UpComingHCard v-for="movie in upComing3" :key = movie.id :movie="movie" class="item"/>
+        <a href="#section1" class="arrow__btn right-arrow">›</a>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+import UpComingHCard from '@/components/UpComingHCard'
+
+export default {
+  name: 'HomeView',
+  components: {
+    UpComingHCard,
+  },
+  computed: {
+    upComing1() {
+      return this.$store.getters.upComing1
+    },
+    upComing2() {
+      return this.$store.getters.upComing2
+    },
+    upComing3() {
+      return this.$store.getters.upComing3
+    },
+    // topRate() {
+    //   return this.$store.state.top_rated_movies
+    // },
+  },
+}
+</script>
+
+<style>
+.wrapper {
+  background-color: black;
+  display: grid;
+  grid-template-columns: repeat(3, 100%);
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.wrapper section {
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  margin: 20px 0;
+}
+.wrapper section .item {
+  position: relative;
+  padding: 0 2px;
+  transition: 250ms all;
+}
+.wrapper section .item:hover {
+  margin: 0 40px;
+  transform: scale(1.2);
+}
+.wrapper section .item .heading {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+}
+.wrapper section .item .duration {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  color: #fff;
+}
+.wrapper section .arrow__btn {
+  position: absolute;
+  color: #fff;
+  text-decoration: none;
+  font-size: 6em;
+  width: 80px;
+  padding: 20px;
+  text-align: center;
+  z-index: 1;
+}
+.wrapper section .left-arrow {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to left, transparent, black 100%);
+}
+.wrapper section .right-arrow {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(to right, transparent, black 100%);
+
+}
+</style>
