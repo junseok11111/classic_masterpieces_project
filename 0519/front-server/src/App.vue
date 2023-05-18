@@ -1,0 +1,48 @@
+<template>
+  <div id="app">
+    <router-view/>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AppView',
+  methods: {
+    getTopRatedMovies() {
+      this.$store.dispatch('getTopRatedMovies')
+    },
+    getUpComingMovies() {
+      this.$store.dispatch('getUpComingMovies')
+    },
+  },
+  created() {
+    this.getTopRatedMovies()
+    this.getUpComingMovies()
+  },
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  background-color: black;
+}
+
+nav {
+  padding: 30px;
+  margin: 0;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
