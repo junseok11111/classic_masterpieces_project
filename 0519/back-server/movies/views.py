@@ -9,8 +9,12 @@ from rest_framework import status
 from .models import Genre, Movie, Actor, Director
 from .serializers import MovieSerializer, ActorSerializer
 
+from .models import Article, MovieComment, ArticleComment
+from .serializers import ArticleSerializer, MovieCommentSerializer, ArticleCommentSerializer
+
 from datetime import datetime
 
+##--------- Vue / DB 요청 ---------##
 @api_view(['GET'])
 def top_rated_simple_list(request):
     movies = Movie.objects.order_by('-vote_average')[:18]
@@ -40,6 +44,61 @@ def get_movie_actors(request, movie_id):
     return Response(serializer.data)
 
 
+##--------- Article ---------##
+# 전체 게시글 조회(GET)
+@api_view(['GET'])
+def articles_list(request):
+    articles = get_list_or_404(Article)
+    serializer = ArticleSerializer(articles, many=True)
+    return Response(serializer.data)
+    
+# 게시글 생성(POST)
+@api_view(['POST'])
+def articles_create(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    print(movie)
+    serializer = ArticleSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(movie=movie)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# 게시글 상세 조회 & 수정 & 삭제
+@api_view(['GET', 'PUT','DELETE'])
+def article_detail(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    
+    if request.method == 'GET':         # 게시글 상세 조회
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT':       # 게시글 수정
+        serializer = ArticleSerializer(article, request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
+    elif request.method == 'DELETE':    # 게시글 삭제
+        article.delete()
+        msg = f"{article_pk}가 지워졌습니다."
+        return Response(msg, status=status.HTTP_204_NO_CONTENT)
+
+##---------- 댓글  ----------##
+
+# 영화 한줄평 전체 조회
+@api_view(['GET'])
+def movie_comments_list(request):
+    movie_comments = get_list_or_404(MovieComment)
+    serializer = MovieCommentSerializer(movie_comments, many=True)
+    return Response(serializer.data)
+
+# 영화 한줄평 생성
+@api_view(['POST'])
+def movie_comments_create(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = MovieCommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(movie=movie)
+        return Response(serializer.data)
 
 # @api_view(['GET'])
 # def movie_list(request):
