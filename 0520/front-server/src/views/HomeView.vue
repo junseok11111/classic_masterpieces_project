@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <!-- <dir>
-      <TopRatedHCard v-for="movie in topRated" :key = movie.id :movie="movie"/>
-    </dir> -->
+    <h3>
+      <router-link :to="{ name: 'UpComingView' }">Upcoming</router-link>
+    </h3>
 
     <div class="contents-container">
       <!-- 유튜브 api 구현 -->
@@ -11,90 +11,102 @@
           :src="'https://www.youtube.com/embed/' + video.id"
           frameborder="0"
           allowfullscreen
-          width="100%"  
-          height="100%"  
+          width="100%"
+          height="100%"
         ></iframe>
         <p>{{ video.title }}</p>
       </div>
 
       <!-- top_rated_movie -->
-      <h3>
-        <router-link :to="{name: 'TopRatedView'}">TopRatedView</router-link>
-      </h3>
       <div class="wrapper">
-        <section id="section1">
-          <a href="#section3" class="arrow__btn left-arrow">‹</a>
-          <TopRatedHCard v-for="movie in topRated1" :key = movie.id :movie="movie" class="item"/>
-          <a href="#section2" class="arrow__btn right-arrow">›</a>
-        </section>
-
-        <section id="section2">
-          <a href="#section1" class="arrow__btn left-arrow">‹</a>
-          <TopRatedHCard v-for="movie in topRated2" :key = movie.id :movie="movie" class="item"/>
-          <a href="#section3" class="arrow__btn right-arrow">›</a>
-        </section>
-        
-        <section id="section3">
-          <a href="#section2" class="arrow__btn left-arrow">‹</a>
-          <TopRatedHCard v-for="movie in topRated3" :key = movie.id :movie="movie" class="item"/>
-          <a href="#section1" class="arrow__btn right-arrow">›</a>
-        </section>
+        <swiper :options="swiperOptions" ref="swiper">
+          <template v-for="movie in topRated">
+            <swiper-slide :key="movie.id">
+              <TopRatedHCard :movie="movie" />
+            </swiper-slide>
+          </template>
+          <div class="swiper-button-next" slot="button-next"></div>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+        </swiper>
       </div>
-
-
     </div>
   </div>
-
 </template>
 
 <script>
-import TopRatedHCard from '@/components/TopRatedHCard'
-import axios from 'axios';
-import {mapGetters} from 'vuex'
+// import UpComingHCard from "@/components/UpComingHCard";
+import TopRatedHCard from "@/components/TopRatedHCard";
+import axios from "axios";
+import { mapState, mapGetters } from "vuex";
+
+// import "swiper/dist/css/swiper.css";
+import "swiper/swiper-bundle.css";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
+    // UpComingHCard,
     TopRatedHCard,
-    
+
+    swiper,
+    swiperSlide,
   },
+
   data() {
     return {
       videos: [],
+      swiperOptions: {
+        slidesPerView: 6,
+        slidesPerGroup: 6,
+        spaceBetween: 20,
+
+        loop: true, // 데이터가 끝까지 다읽으면 처음으로 돌아옴
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      },
     };
   },
   mounted() {
     this.getVideos();
   },
   computed: {
-    ...mapGetters(['topRated']),
-    ...mapGetters(['topRated1', 'topRated2', 'topRated3']),
-    /* vuex 모듈 분리하여 관리
-    topRated1() {return this.$store.getters.topRated1},
-    topRated2() {return this.$store.getters.topRated2},
-    topRated3() {return this.$store.getters.topRated3},
-    */
+    ...mapGetters(["topRated"]),
+    ...mapState(["top_rated_movies"]),
+
+    // ...mapGetters(["topRated1", "topRated2", "topRated3"]),
+    // ...mapGetters(["upComing1", "upComing2", "upComing3"]),
   },
   methods: {
     async getVideos() {
       try {
-        const response = await axios.get('https://www.googleapis.com/youtube/v3/videos', {
-          params: {
-            part: 'snippet',
-            chart: 'mostPopular',
-            maxResults: 1,
-            key: 'AIzaSyAV_SvBR49eSF26yQGTJ2E4vFYh5bi1H2o' // Replace with your actual API key
+        const response = await axios.get(
+          "https://www.googleapis.com/youtube/v3/videos",
+          {
+            params: {
+              part: "snippet",
+              chart: "mostPopular",
+              maxResults: 1,
+              key: "AIzaSyAV_SvBR49eSF26yQGTJ2E4vFYh5bi1H2o", // Replace with your actual API key
+            },
           }
-        });
+        );
 
         this.videos = response.data.items;
       } catch (error) {
         console.error(error);
       }
     },
+    moveSwiperNext() {
+      this.$refs.swiper.swiper.slideNext(1, false);
+    },
+    moveSwiperPrev() {
+      this.$refs.swiper.swiper.slidePrev(1, false);
+    },
   },
-  
-}
+};
 </script>
 
 <style>
@@ -105,52 +117,15 @@ export default {
   height: 100%;
 }
 
-.wrapper {
-  background-color: black;
-  display: grid;
-  grid-template-columns: repeat(3, 100%);
-  overflow: hidden;
-  scroll-behavior: smooth;
+.contents-container {
+  margin-left: 300px;
+  margin-right: 300px;
 }
-.wrapper section {
+
+.video-container {
   width: 100%;
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(6, auto);
-  margin: 20px 0;
-}
-.wrapper section .item {
-  position: relative;
-  padding: 0 2px;
-  transition: 250ms all;
-}
-.wrapper section .item:hover {
-  margin: 0 40px;
-  transform: scale(1.2);
-}
-.wrapper section .item .heading {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: #fff;
-}
-.wrapper section .item .duration {
-  position: absolute;
-  bottom: 0;
-  left: 20px;
-  color: #fff;
-}
-.wrapper section .arrow__btn {
-  position: absolute;
-  color: #fff;
-  text-decoration: none;
-  font-size: 6em;
-  width: 80px;
-  padding: 20px;
-  text-align: center;
-  z-index: 1;
-  top: 50%;
-  transform: translateY(-50%);
+  height: 700px;
+  background: linear-gradient(black, yellow);
 }
 
 .card-container {
@@ -159,31 +134,5 @@ export default {
   overflow-x: auto;
   padding: 0 20px;
   gap: 20px;
-}
-.wrapper section .left-arrow {
-  /* top: 0;
-  bottom: 0; */
-  left: 0;
-  background: linear-gradient(to left, transparent, black 100%);
-}
-.wrapper section .right-arrow {
-  /* top: 0;
-  bottom: 0; */
-  right: 0;
-  background: linear-gradient(to right, transparent, black 100%);
-
-}
-
-
-.contents-container {
-  margin-left : 300px ;
-  margin-right : 300px ;
-  
-}
-
-.video-container {
-  width: 100%; /* 화면 전체 너비 */
-  height: 700px; /* 화면 전체 높이 */
-  background: linear-gradient(black, yellow);
 }
 </style>
