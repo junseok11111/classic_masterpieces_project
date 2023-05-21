@@ -17,7 +17,7 @@ urlpatterns = [
     path('articles/<int:article_pk>/', views.article_detail),        # 게시글 상세 조회 & 수정 & 삭제
     
     # ---영화 한줄평---
-    path('movies/<int:movie_pk>/comments/', views.movie_comments_create),    # 영화 한줄평 생성
+    path('movies/<int:movie_pk>/comments/', views.movie_comments_list),    # 영화 한줄평 생성 & 전체조회
     path('movies/<int:movie_pk>/comments/<int:comment_pk>/', views.movie_comments_detail), # 영화 한줄평 상세 조회 & 수정 & 삭제
 
     # ---영화 게시판 댓글---

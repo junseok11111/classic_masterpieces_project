@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import topRatedModule from './modules/topRatedModule'
 import movieDetailModule from './modules/movieDetailModule'
+import articleCommentModule from './modules/articleCommentModule'
 import router from '../router'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -74,5 +75,6 @@ export default new Vuex.Store({
   modules: {
     topRatedModule,
     movieDetailModule,
+    articleCommentModule,
   }
 })

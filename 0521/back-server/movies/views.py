@@ -89,14 +89,23 @@ def article_detail(request, article_pk):
 
 
 ##---------- 영화 한줄평  ----------##
-# 영화 한줄평 생성
-@api_view(['POST'])
-def movie_comments_create(request, movie_pk):
+@api_view(['GET', 'POST'])
+def movie_comments_list(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    serializer = MovieCommentSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie)
+
+    # 영화 한줄평 전체 조회
+    if request.method == 'GET':
+        movie_comments = MovieComment.objects.filter(movie_id=movie_pk)
+        serializer = MovieCommentSerializer(movie_comments, many=True)
         return Response(serializer.data)
+    
+    # 영화 한줄평 생성
+    elif request.method == 'POST':
+        serializer = MovieCommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(movie=movie)
+            return Response(serializer.data)
+    
 
 # 영화 한줄평 조회 & 수정 & 삭제
 @api_view(['GET', 'PUT','DELETE'])

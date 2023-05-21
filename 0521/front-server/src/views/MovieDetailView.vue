@@ -39,7 +39,6 @@
 
       </div>
 
-
     </div>
     <hr>
 
@@ -52,17 +51,27 @@
     />
 
     </div>
+
+    <div>
+      <MovieCommentsList 
+        v-for="movieComment in movieComments"
+        :key="movieComment.id"
+        :movieComment="movieComment"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import ActorCard from '@/components/ActorCard.vue'
-import {mapState} from 'vuex'
+import MovieCommentsList from '@/components/MovieCommentsList.vue'
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: 'MovieDetailView',
   components:{
     ActorCard,
+    MovieCommentsList,
   },
   data() {
     return {
@@ -91,9 +100,7 @@ export default {
     ...mapState({
       actors: state => state.movieDetailModule.actors
     }),
-    // casts() {
-    //   return this.$store.state.casts
-    // },
+    ...mapGetters(['movieComments']),
   },
   methods: {
     getMovieDetail() {
@@ -104,10 +111,15 @@ export default {
       const movieId = this.$route.params.id
       this.$store.dispatch('getMovieActors', movieId)
     },
+    getMovieCommentsList() {
+      const movieId = this.$route.params.id
+      this.$store.dispatch('getMovieCommentsList', movieId)
+    }
   },
   created() {
     this.getMovieDetail()
     this.getMovieActors()
+    this.getMovieCommentsList()
   }
 }
 </script>
