@@ -7,7 +7,7 @@
 
         <input type="text" id="username" v-model="username" placeholder="아이디를 입력하세요"><br>
         <input type="password" id="password1" v-model="password1" placeholder="비밀번호를 입력하세요"><br>
-        <input type="password" id="password2" v-model="password2" placeholder="비밀번호를 입력하세요">
+        <input type="password" id="password2" v-model="password2" placeholder="비밀번호를 확인하세요">
 
         <input type="submit" value="SignUp" class="submit-button">
       </form>

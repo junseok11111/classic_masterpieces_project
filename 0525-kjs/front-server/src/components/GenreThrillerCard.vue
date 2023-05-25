@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>뽑히나?</h1>
-    <p>{{movie.title}}</p>
+    <p>{{movieTitle}}</p>
   </div>
 </template>
 
@@ -10,6 +10,11 @@ export default {
   name: 'GenreThrillerCard',
   props: {
     movie: Object,
+  },
+  computed: {
+    movieTitle() {
+      return this.movie?.title
+    },
   }
 }
 </script>

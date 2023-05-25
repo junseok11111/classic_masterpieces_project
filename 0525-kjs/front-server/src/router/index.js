@@ -53,22 +53,22 @@ const routes = [
 
   // Genre
   {
-    path: 'movies/thriller',
+    path: '/movies/thriller',
     name: 'GenreThrillerView',
     component: GenreThrillerView
   },
   {
-    path: 'movies/science_fiction',
+    path: '/movies/science_fiction',
     name: 'GenreSFView',
     component: GenreSFView
   },
   {
-    path: 'movies/action',
+    path: '/movies/action',
     name: 'GenreActionView',
     component: GenreActionView
   },
   {
-    path: 'movies/mystery',
+    path: '/movies/mystery',
     name: 'GenreMysteryView',
     component: GenreMysteryView
   },

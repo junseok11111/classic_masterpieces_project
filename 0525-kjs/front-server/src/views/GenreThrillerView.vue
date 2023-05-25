@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{thrillerMovies}}
     <GenreThrillerCard
       v-for="movie in thrillerMovies"
       :key="movie.id"
@@ -19,7 +18,7 @@ export default {
     GenreThrillerCard,
   },
   computed: {
-    ...mapGetters(['thrillerMovies'])
+    ...mapGetters(["thrillerMovies"])
     // ...mapState({
     //   thrillerMovies: state => state.genreMoviesModule.thriller_movies
     // }),
@@ -32,9 +31,9 @@ export default {
   created() {
     this.getThrillerMovies()
   },
-  beforeMount() {
-  this.getThrillerMovies();
-  }
+  // beforeMount() {
+  // this.getThrillerMovies();
+  // }
 }
 </script>
 
