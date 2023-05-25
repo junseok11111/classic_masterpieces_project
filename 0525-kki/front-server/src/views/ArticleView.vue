@@ -1,20 +1,20 @@
 <template>
-  <div class="ArticleView">
+  <div class="ArticleView-container">
     <div class="articleimg"></div>
     <br />
     <br />
     <br />
 
-    <div class="articletable">
+    <div class="article_table">
       <div class="scaredtitle">공포게시판</div>
 
       <div class="writebutton">
         <button @click.prevent="createArticle">글쓰기</button>
       </div>
-      <tr class="mockrock">
-        <td class="title">글 제목</td>
-        <td class="writer">작성자</td>
-        <td class="time">작성시간</td>
+      <tr class="article_list">
+        <td class="article_title">글 제목</td>
+        <td class="article_writer">작성자</td>
+        <td class="article_time">작성시간</td>
       </tr>
       <ArticleItem
         v-for="article in articles"
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style>
-.ArticleView {
+.ArticleView-container {
   background-color: rgba(0, 0, 0, 0.9);
   height: 100vw;
 }
@@ -68,7 +68,7 @@ export default {
   background-repeat: no-repeat;
 }
 
-.mockrock {
+.article_list {
   max-width: 1300px;
   width: auto;
   background-color: rgba(0, 0, 0, 0.9);
@@ -79,27 +79,27 @@ export default {
   color: #ffffff;
 }
 
-.title {
+.article_title {
   border-top: 3px solid #ddd;
   border-bottom: 1px solid #ddd;
   color: #ffffff;
   width: 700px;
 }
 
-.writer {
+.article_writer {
   border-top: 3px solid #ddd;
   border-bottom: 1px solid #ddd;
   width: 300px;
   color: #ffffff;
 }
 
-.time {
+.article_time {
   border-top: 3px solid #ddd;
   border-bottom: 1px solid #ddd;
   width: 300px;
   color: #ffffff;
 }
-.articletable {
+.article_table {
   margin-left: 300px;
   margin-right: 300px;
 }
